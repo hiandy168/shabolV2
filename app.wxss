@@ -1,0 +1,5 @@
+page {
+  background-color: #ebebeb;
+  height: 100%;
+  font:32rpx/1.5 "Microsoft YaHei";
+}

@@ -1,0 +1,54 @@
+@import "../components/loading/loading.wxss";
+.container{
+  width: 100%;
+  height: 100%;
+  background: #EFEFF4;
+  text-align: center;
+}
+.gisopic{
+  width: 200rpx;
+  height: 200rpx;
+  margin-top: 120rpx;
+}
+.gisopic-title{
+  font-size: 44rpx;
+  color: #333333;
+  letter-spacing: 20rpx;
+  text-indent: 20rpx;
+  line-height: 44rpx;
+  margin-top: 44rpx;
+}
+.gisopic-desc{
+  font-size: 32rpx;
+  color: #666666;
+  letter-spacing: 20rpx;
+  text-indent: 20rpx;
+  line-height: 32rpx;
+  margin-top: 34rpx;
+}
+.choose-tip{
+  font-size: 32rpx;
+  color: #333333;
+  letter-spacing: 0;
+  line-height: 32rpx;
+  margin-top: 200rpx;
+}
+.choose-btn{
+  margin: 30rpx;
+  height: 120rpx;
+  font-size: 44rpx;
+  color: #000000;
+  letter-spacing: 40rpx;
+  line-height: 120rpx;
+  color: #fff;
+  text-indent: 40rpx;
+  border-radius: 12rpx;
+}
+.carOwner{
+  margin-top: 65rpx;
+  background: #02BB00;
+}
+.goodsOwner{
+  margin-top: 10rpx;
+  background: #FFB000;
+}

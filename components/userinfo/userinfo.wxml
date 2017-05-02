@@ -1,0 +1,6 @@
+<template name="userinfo">
+    <view class="user-info" bindtap="edit">
+        <image src="{{userInfo.avatarUrl}}" class="avatar" />
+        <text class="nickname">{{userInfo.nickName}}</text>
+    </view>
+</template>

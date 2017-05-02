@@ -1,0 +1,7 @@
+<template name="loading" hidden="{{loading}}" >
+    <view class="jump-cover" hidden="{{loading}}">
+    	<view class="loading visible">
+    		<view class="loading-ring">等</view>
+    	</view>
+    </view>
+</template>

@@ -1,0 +1,10 @@
+<import src="../components/loading/loading.wxml"/>
+<template is="loading" data="{{loading}}"/>
+<view class="container" hidden="{{show}}">
+  <image class="gisopic" src="../images/gisopic.png" />
+  <view class="gisopic-title">极速配</view>
+  <view class="gisopic-desc">您身边的配货专家</view>
+  <view class="choose-tip">👇👇 请选择您的身份👇👇</view>
+  <button class="choose-btn carOwner" bindtap="carOwner" data-type="1">我是车主</button>
+  <button class="choose-btn goodsOwner" bindtap="goodsOwner" data-type="2">我是货主</button>
+</view>

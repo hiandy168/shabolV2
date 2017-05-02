@@ -1,0 +1,35 @@
+<import src="../../components/loading/loading.wxml"/>
+<template is="loading" data="{{loading}}"/>
+<view class="home">
+  <scroll-view scroll-y="true" class="container" style="height:100%" bindscrolltolower="toLower">
+    <view class="item1">
+      <image class="img" src="https://s.kcimg.cn/gisopic/avatar/wx_img.png" />
+      <view class="user-info">
+        <text class="nickname">
+          {{nickname}}
+        </text>
+        <image class="avatar" src="{{avatar}}" />
+      </view>
+    </view>
+    <view class="content" wx:if="{{messages.length}}">
+      <view class="item" wx:for="{{messages}}" wx:for-item="message" wx:for-index="index">
+        <text class="today-time" wx:if="{{message.add_time == '今天'}}">{{message.add_time}}</text>
+        <view class="date-time" wx:else>
+          <text class="day-time">{{message.add_time[0]}}</text>
+          <text class="month-time">{{message.add_time[1]}}</text>
+        </view>
+        <view class="item-content">
+          <text class="item-text">{{message.user_content}}</text>
+          <view class="item-phone" wx:for="{{message.phone_num[0]}}" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
+          <view class="concatUs">联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>他还没有发过货源，请点击查看更多货源！</view>
+    <view class="loading-more" hidden="{{loadMore}}">
+      <image src="../../images/loading.gif" class="loadingImg" />
+    </view>
+    <view wx:if="{{showMsgAll}}" class="showMsgAll">~以上为全部货源~</view>
+  </scroll-view>
+  <view class="newMsg" bindtap="jumpToHome"><text class="newMsgText">查看更多货源</text></view>
+</view>
