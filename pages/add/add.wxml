@@ -4,10 +4,18 @@
   <view class="form">
     <textarea class="textarea" name="textarea" maxlength="500" placeholder="" value="{{textValues}}" bindinput="inputValue" bindfocus="focus" bindblur="blur" />
     <button formType="submit" class="submit">发布</button>
-    <view class="placeholder" wx:if="{{placeholder}}">
+    <view class="placeholder" wx:if="{{placeholder && edit == 1}}">
       <text>输入所需车辆信息示例:</text>
       <text>北京到上海需13米高栏车</text>
       <text>青岛到合肥需9.6米厢车</text>
+      <text>187****7865</text>
+      <text>电话是需要必填的</text>
+      <text>否则会被当成闲聊，发布不成功哦</text>
+    </view>
+    <view class="placeholder" wx:elif="{{placeholder && edit == 2}}">
+      <text>输入所需车辆信息示例:</text>
+      <text>求货</text>
+      <text>北京到上海13米高栏车</text>
       <text>187****7865</text>
       <text>电话是需要必填的</text>
       <text>否则会被当成闲聊，发布不成功哦</text>

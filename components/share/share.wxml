@@ -1,0 +1,3 @@
+<template name="share">
+    <view class="wechat-share-tip" hidden="{{shareHidden}}" bindtap="share"></view>
+</template>

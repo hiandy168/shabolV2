@@ -1,5 +1,7 @@
 <import src="../../components/loading/loading.wxml"/>
+<import src="../../components/share/share.wxml" />
 <template is="loading" data="{{loading}}"/>
+<template is="share" data="{{shareHidden}}" wx:if="mineUid == unionId" />
 <view class="home">
   <scroll-view scroll-y="true" class="container" style="height:100%" bindscrolltolower="toLower">
     <view class="item1">
@@ -25,11 +27,11 @@
         </view>
       </view>
     </view>
-    <view class="empty" wx:else>他还没有发过货源，请点击查看更多货源！</view>
+    <view class="empty" wx:else>他还没有发过信息，请点击查看更多信息！</view>
     <view class="loading-more" hidden="{{loadMore}}">
       <image src="../../images/loading.gif" class="loadingImg" />
     </view>
-    <view wx:if="{{showMsgAll}}" class="showMsgAll">~以上为全部货源~</view>
+    <view wx:if="{{showMsgAll}}" class="showMsgAll">~以上为全部信息~</view>
   </scroll-view>
   <view class="newMsg" bindtap="jumpToHome"><text class="newMsgText">查看更多货源</text></view>
 </view>

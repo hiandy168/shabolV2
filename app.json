@@ -5,7 +5,8 @@
 		"pages/add/add",
 		"pages/user/user",
 		"pages/close/close",
-    "pages/another/another"
+    "pages/another/another",
+    "pages/selectCity/selectCity"
   ],
   "window":{
     "backgroundTextStyle":"light",

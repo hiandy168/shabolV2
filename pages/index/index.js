@@ -7,11 +7,11 @@ Page({
     sharesContent:{},
     lastMessageId:'',
     messages:[],
-    nowId:'',
+    end:false,
+    chooseTab:true,
     mineUid:'',
     loading:false,
     loadMore:true,
-    loadingText:"加载中...",
     scrollStatus:true,
     type: '1'
   },
@@ -22,6 +22,7 @@ Page({
         c:'carnewapi',
         m:'getlist',
         id:id,
+        isCarGo: this.data.chooseTab ? '1' : '2',
         ts:+new Date()
       },
 			success:function(res){
@@ -36,6 +37,11 @@ Page({
     var that = this;
     that.getRequest('',(res)=>{
       var data = res.data;
+      if(data.list.length < 40){
+        that.setData({
+          end:true
+        })
+      }
       that.setData({
         messages:data.list,
         mineUid:app.uid
@@ -64,10 +70,34 @@ Page({
       }
     })
   },
+  chooseGoods () {
+    app.load = false
+    this.setData({
+      end:false,
+      chooseTab:true
+    })
+    if(!app.uid){
+      util.getUserInfo(this.listRender,this)
+    }else{
+      this.listRender(app.uid,this)
+    }
+  },
+  chooseCars () {
+    app.load = false
+    this.setData({
+      end:false,
+      chooseTab:false
+    })
+    if(!app.uid){
+      util.getUserInfo(this.listRender,this)
+    }else{
+      this.listRender(app.uid,this)
+    }
+  },
   loadMore:function(){   // 下拉加载更多
     if(app.load) return;
     app.load = true;   /// 判断是否在进行loadmore
-    var id = this.data.messages[0].id;
+    var id = this.data.messages[0].id
     this.setData({
       loadMore:false,
       scrollStatus:false
@@ -80,7 +110,7 @@ Page({
         });
         setTimeout(() => {
           this.setData ({
-            lastMessageId :'item_' + (id-1),
+            lastMessageId :'item_' + id,
             loadMore:true,
             scrollStatus:true
           })
@@ -88,6 +118,7 @@ Page({
         app.load = false;
       }else{
         this.setData({
+          end:true,
           loadMore:true,
           scrollStatus:true
         })
@@ -107,6 +138,11 @@ Page({
         openId: app.uid,
         position: type
       }
+    })
+  },
+  showTheSelectCity () {
+    wx.navigateTo({
+      url:'../selectCity/selectCity'
     })
   },
   saveUserInfo (unionId) {
@@ -145,7 +181,7 @@ Page({
       success:function(res){
         var position = res.data.data.position
         if(position == '2' || position == '1'){
-          that.setPositionType(position)
+          // that.setPositionType(position)
           that.setData({
             type: position
           })
@@ -165,20 +201,25 @@ Page({
   },
   onLoad: function (e) {
     if(this.loaded) return;
+    if(e.chooseTab){  // 判断是否通过添加页面跳转回来的
+      this.setData({
+        chooseTab:false
+      })
+    }
     if(e.from){  // 判断是否通过选择身份进入的
       this.setData({
         type:e.type,
         select:e.from
       })
     }else{
-      var chooseType = wx.getStorageSync('chooseType')
-      if (chooseType) {  // 选择完身份存在缓存
-        this.setData({
-          type:chooseType.type
-        })
-      } else {
+      // var chooseType = wx.getStorageSync('chooseType')
+      // if (chooseType) {  // 选择完身份存在缓存
+      //   this.setData({
+      //     type:chooseType.type
+      //   })
+      // } else {
         util.getUserInfo(this.searchType,this)
-      }
+      // }
     }
     if(!app.uid){
       util.getUserInfo(this.listRender,this)
@@ -193,8 +234,8 @@ Page({
   		that.setData({
         userInfo:userInfo,
         sharesContent:{
-          title:nickname + '的朋友圈货源',
-          path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar
+          title:that.data.type == '1' ? nickname + "的车源" : nickname + "的货源",
+          path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
         }
   		})
   	})
@@ -210,8 +251,8 @@ Page({
     }
   },
   makePhoneCall:function(e){
-    var item = e.target.dataset.item;
-    var contetn = e.target.dataset.content
+    var item = e.target.dataset.item
+    var content = e.target.dataset.content
     wx.makePhoneCall({
       phoneNumber:item,
       success:function(){
@@ -224,9 +265,14 @@ Page({
       }
     })
   },
-  jumpToEdit:function(){
+  goodsToEdit:function(){
     wx.navigateTo({
-      url:'../add/add'
+      url:'../add/add?edit=1'
+    })
+  },
+  carToEdit () {
+    wx.navigateTo({
+      url:'../add/add?edit=2'
     })
   },
   onShareAppMessage:function(){

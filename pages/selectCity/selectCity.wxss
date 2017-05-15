@@ -1,0 +1,132 @@
+@import "../../components/loading/loading.wxss";
+@import "../index/index.wxss";
+.maxlength{
+  height:50px;
+  line-height:50px;
+  text-align:center;
+  font-size:14px;
+  color:#999;
+}
+.item{
+  position: relative;
+  padding-top:40rpx;
+  min-height: 70rpx;
+  margin-top: 20rpx;
+}
+.showTime{
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height:40rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  white-space: nowrap;
+  color: #999;
+  left: 0;
+  top: 0;
+}
+.keyWord{
+  color: #F76260;
+}
+.empty-list{
+  flex:1;
+  width: 100%;
+  padding-bottom: 100rpx;
+  background: #fff;
+}
+.empty-text{
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 40rpx;
+    padding-top: 400rpx;
+    color: #A2B4CC;
+}
+.noMore{
+  height:88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  color:#999
+}
+.select-background{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 400;
+}
+.select-back-content{
+  flex: 1;
+  margin: 40rpx auto;
+  width: 80%;
+  height: 50%;
+  margin-top: 160rpx;
+  background: #fff;
+  overflow: auto;
+}
+.select-title{
+  display: block;
+  text-align: center;
+  line-height:80rpx;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 4rpx;
+}
+.select-content{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10rpx;
+}
+.select-content-name{
+  width: 20%;
+  font-size: 28rpx;
+  line-height: 70rpx;
+  text-align: center;
+  margin: 10rpx;
+  height: 70rpx;
+  border: 2rpx solid #eee;
+  border-radius: 8rpx;
+}
+.selected-name{
+  background:#0066c0;
+  color: #fff;
+}
+.select-closeThis{
+  color: #000;
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 100rpx;
+  border: solid 2rpx #eee;
+  border-radius: 60rpx;
+  background: #eee;
+}
+.select-closeThis:before {
+  content: '';
+  position: absolute;
+  width: 40rpx;
+  height: 2rpx;
+  margin-top: 30rpx;
+  margin-left: 10rpx;
+  color: #828283;
+  background-color: currentColor;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.select-closeThis:after {
+  content: '';
+  position: absolute;
+  width: 40rpx;
+  height: 2rpx;
+  margin-top: 30rpx;
+  margin-left: 10rpx;
+  color: #828283;
+  background-color: currentColor;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}

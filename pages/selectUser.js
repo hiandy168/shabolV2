@@ -11,24 +11,24 @@ Page({
     index: ''
   },
   onLoad:function(options){
-    var chooseType = wx.getStorageSync('chooseType')
-    if(chooseType){
-      if(chooseType.type == '1'){
-        wx.redirectTo({
-          url:'./index/index?type=1'
-        })
-      } else {
-        wx.redirectTo({
-          url:'./index/index?type=2'
-        })
-      }
-    } else {
+    // var chooseType = wx.getStorageSync('chooseType')
+    // if(chooseType){
+    //   if(chooseType.type == '1'){
+    //     wx.redirectTo({
+    //       url:'./index/index?type=1'
+    //     })
+    //   } else {
+    //     wx.redirectTo({
+    //       url:'./index/index?type=2'
+    //     })
+    //   }
+    // } else {
       if(!app.uid){
         util.getUserInfo(this.searchType,this)
       }else{
         this.searchType(app.uid,this)
       }
-    }
+    // }
   },
   searchType (...options){
     let that = this
@@ -61,13 +61,13 @@ Page({
     })
   },
   carOwner:function(e){
-    this.setType('1')
+    // this.setType('1')
     wx.redirectTo({
       url:'index/index?type=1&from=select'
     })
   },
   goodsOwner:function(e){
-    this.setType('2')
+    // this.setType('2')
     wx.redirectTo({
       url:'index/index?type=2&from=select'
     })

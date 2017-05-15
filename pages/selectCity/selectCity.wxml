@@ -1,0 +1,39 @@
+<import src="../../components/loading/loading.wxml"/>
+<template is="loading" data="{{loading}}"/>
+<view class="container">
+  <view class="loading-more" hidden="{{loadMore}}">
+    <image src="../../images/loading.gif" class="loadingImg" />
+  </view>
+  <scroll-view  scroll-y="{{scrollStatus}}" class="content" style="height:100%" scroll-into-view="{{lastMessageId}}" bindscrolltoupper="toUpper" upper-threshold="50" wx:if="{{messages.length}}">
+    <view class="noMore" wx:if="{{end}}">没有更多了~</view>
+    <view class="item default" wx:for="{{messages}}" wx:key="id" wx:for-item="message" id="item_{{message.id}}">
+      <view class="showTime">{{message.add_time}}</view>
+      <image class="avatar" src="{{message.user_photo}}" />
+      <view class="nickname">
+        <text>{{message.user_name}}</text>
+      </view>
+      <view class="item-content">
+        <text class="item-text" selectable>{{message.user_content}}</text>
+        <view wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
+        <view>联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
+      </view>
+    </view>
+    <view id="maxlength" style="height:100rpx;"></view>
+  </scroll-view>
+  <view class="empty-list" wx:else>
+		<text class="empty-text">暂时没有相关货源！请查看其他货源！</text>
+  </view>
+  <view class="footer">
+    <view class="textarea" bindtap="carToEdit">发布空车信息</view>
+    <button class="submit search" bindtap="showSearch">{{search}}</button>
+  </view>
+</view>
+<view class="select-background" wx:if="{{showSelectCity}}">
+  <view class="select-back-content">
+    <text class="select-title">点击省份搜索货源</text>
+    <view class="select-content">
+      <view class="select-content-name {{index == activeIndex ? 'selected-name' : ''}}" wx:for="{{list}}" data-index="{{index}}" data-id="{{item.provinceid}}" data-item="{{item.province}}" bindtap="selectedItem">{{item.province}}</view>
+    </view>
+  </view>
+  <view class="select-closeThis" bindtap="closeShow"></view>
+</view>

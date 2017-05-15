@@ -6,14 +6,17 @@ Page({
     userInfo: {},
     nickname: '',
     avatar: '',
+    isCarGo: '',
     messages:[],
     page: 1,
     unionId: '',
+    mineUid: '',
     loadMore:true,
     showMsgAll:false,
-    addTime: []
+    addTime: [],
+    shareHidden: true
   },
-  getRequest:function(unionId,suc,err){   //进行请求
+  getRequest:function(unionId,isCarGo,suc,err){   //进行请求
     wx.request({
       url:app.ajaxurl,
       data:{
@@ -21,6 +24,7 @@ Page({
         m:'getsharedatelist',
         page: this.data.page,
         unionId:unionId,
+        isCarGo:isCarGo,
         ts: +new Date()
       },
       success:function(res){
@@ -31,6 +35,23 @@ Page({
       }
     })
   },
+  onReady () {
+    this.setData({
+      mineUid:app.uid
+    })
+    if(!app.isShowShare && app.uid){
+      var that = this;
+      that.setData({
+        shareHidden:that.data['shareHidden'] ? false : true
+      });
+      setTimeout(function(){
+        that.setData({
+          shareHidden:true
+        });
+      },2000);
+    }
+    app.isShowShare = true
+  },
   onLoad:function(options){
     // 页面初始化 options为页面跳转所带来的参数
     var that = this
@@ -40,16 +61,17 @@ Page({
       that.setData({
         userInfo:userInfo,
         nickname:options['nickname'],
-        avatar:options['avatar']
+        avatar:options['avatar'],
+        isCarGo:options['isCarGo']
       })
     })
     wx.setNavigationBarTitle({
-      title:options['nickname'] + "的货源"
+      title:options['isCarGo'] == '2' ? options['nickname'] + "的车源" : options['nickname'] + "的货源"
     })
     // var unionId = "ozjPGs7ZiXD4qB0LvCmJiAN2CzJI"
     var unionId = options['unionId']
-    that.data.unionId = unionId
-    that.getRequest(unionId,(res)=>{
+    var isCarGo = options['isCarGo']
+    that.getRequest(unionId,isCarGo,(res)=>{
       var data = res.data;
       var d = [];
       for (let key in data.list) {
@@ -60,9 +82,10 @@ Page({
         messages:d,
         loading:true,
         page:this.data.page + 1,
+        unionId:unionId,
         sharesContent:{
-          title:options['nickname'] + "的朋友圈货源",
-          path:'/pages/close/close?unionId=' + unionId + '&nickname=' + options['nickname'] + '&avatar=' + options['avatar']
+          title:options['isCarGo'] == '2' ? options['nickname'] + "的朋友圈车源" : options['nickname'] + "的朋友圈货源",
+          path:'/pages/close/close?unionId=' + unionId + '&nickname=' + options['nickname'] + '&avatar=' + options['avatar'] + '&isCarGo=' + options['isCarGo']
         }
       })
     })
@@ -74,7 +97,7 @@ Page({
   },
   makePhoneCall:function(e){
     var item = e.target.dataset.item;
-    var contetn = e.target.dataset.content
+    var content = e.target.dataset.content
     wx.makePhoneCall({
       phoneNumber:item,
       success:function(){
@@ -107,7 +130,7 @@ Page({
     that.setData({
       loadMore:false
     })
-    that.getRequest(that.data.unionId,(res)=>{
+    that.getRequest(that.data.unionId,that.data.isCarGo,(res)=>{
       var data = res.data;
       var more = [];
       if(data.info == 1){

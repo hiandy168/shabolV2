@@ -1,0 +1,10 @@
+.wechat-share-tip{
+    display: block;
+    position: fixed;
+    z-index: 999;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background:rgba(0, 0, 0, .8) url(https://s.kcimg.cn/public/images/wechat-share.png) 100% 0px / 205px 216px no-repeat;
+}

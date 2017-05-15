@@ -1,25 +1,34 @@
 <import src="../../components/loading/loading.wxml"/>
 <template is="loading" data="{{loading}}"/>
 <view class="container">
+  <view class="different-choose">
+    <text class="{{chooseTab ? 'chooseTab' : 'otherTab'}}" bindtap="chooseGoods">货源</text>
+    <text class="{{chooseTab ? 'otherTab' : 'chooseTab'}}" bindtap="chooseCars">车源</text>
+  </view>
   <view class="loading-more" hidden="{{loadMore}}">
     <image src="../../images/loading.gif" class="loadingImg" />
   </view>
   <scroll-view scroll-y="{{scrollStatus}}" class="content" style="height:100%" scroll-into-view="{{lastMessageId}}" bindscrolltoupper="toUpper" upper-threshold="50">
+    <view class="noMore" wx:if="{{end}}">没有更多了~</view>
     <view class="item {{mineUid == message.open_id ? 'mine' : 'default'}}" wx:for="{{messages}}" wx:key="id" wx:for-item="message" id="item_{{message.id}}">
       <image class="avatar" src="{{message.user_photo}}" />
       <view class="nickname" wx:if="{{mineUid != message.open_id}}">
         <text>{{message.user_name}}</text>
       </view>
       <view class="item-content">
-        <text class="item-text">{{message.user_content}}</text>
+        <text class="item-text" selectable>{{message.user_content}}</text>
         <view wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
         <view>联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
       </view>
     </view>
     <view id="maxlength" style="height:100rpx;"></view>
   </scroll-view>
-  <view class="footer" bindtap="jumpToEdit" hidden="{{type == '2' ? false : true}}">
+  <view class="footer" bindtap="goodsToEdit" wx:if="{{type == '2'}}">
     <view class="textarea">输入货源信息</view>
     <button class="submit" disabled>发送</button>
+  </view>
+  <view wx:else class="footer">
+    <view class="textarea" bindtap="carToEdit">发布空车信息</view>
+    <button class="submit search" bindtap="showTheSelectCity">搜索货源</button>
   </view>
 </view>

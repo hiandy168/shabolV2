@@ -1,7 +1,9 @@
 var app = getApp()
 Page({
   data:{
+    edit: -1,
     inputValue:'',
+    unionId: '',
     photo:'',
     userName:'',
     placeholder:true,
@@ -10,8 +12,16 @@ Page({
     textValues: ''
   },
   onLoad:function(options){
+    this.setData({
+      edit:options.edit
+    })
+    wx.setNavigationBarTitle({
+      title:options.edit == '2' ? '发布车源' : '发布货源'
+    })
     var that = this
-    if(app.globalData.userInfo == null){
+    var unionId = wx.getStorageSync('unionId')
+    if(app.globalData.userInfo == null){ // 如果没有user信息，重新授权获取
+      if(app.authSetting) return
       wx.openSetting({
         success:(res)=>{
           if(!res.authSetting["scope.userInfo"]){
@@ -37,25 +47,26 @@ Page({
           })
         }
       })
-    } else {
+    } else {  // 如果有直接读缓存
       app.authSetting = true
       wx.getStorage({
         key: 'userInfo',
         success: function(res) {
           that.setData({
             photo:res.data.photo,
-            userName:res.data.userName
+            userName:res.data.userName,
+            unionId: unionId
           })
         }
       })
     }
   },
-  focus:function(){
+  focus:function(){ // 获取焦点
     this.setData({
       placeholder:false
     })
   },
-  blur:function(){
+  blur:function(){  // 失去焦点
     if(trims(this.data.inputValue || trims(this.data.textValues)) == ''){
       this.setData({
         placeholder:true
@@ -84,6 +95,7 @@ Page({
           data:{
             c: 'carnewapi',
             m: 'savecargo',
+            isCarGo: that.data.edit,
             openId: app.uid,
             userName:that.data.userName,
             photo:that.data.photo,
@@ -108,7 +120,19 @@ Page({
               })
               setTimeout(() => {
                 wx.hideToast()
-                wx.navigateBack()
+                if(that.data.unionId == ''){
+                  wx.navigateBack()
+                }else{
+                  if(that.data.edit == '1'){
+                    wx.redirectTo({
+                      url:'../close/close?unionId=' + that.data.unionId + '&nickname=' + that.data.userName + '&avatar=' + that.data.photo + '&isCarGo=' + that.data.edit
+                    })
+                  }else{
+                    wx.redirectTo({
+                      url:'../index/index?chooseTab=' + false
+                    })
+                  }
+                }
               }, 1500)
             }
           }

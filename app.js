@@ -40,7 +40,7 @@ App({
             fail:function(res){ // 拒绝授权
               if(that.globalData.cancle) return
               wx.redirectTo({
-                url:'/pages/index/index?type=1'
+                url:'/pages/index/index'
               })
               that.globalData.cancle = true
               wx.hideShareMenu()
