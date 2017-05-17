@@ -21,16 +21,16 @@
     <view id="maxlength" style="height:100rpx;"></view>
   </scroll-view>
   <view class="empty-list" wx:else>
-		<text class="empty-text">暂时没有相关货源！请查看其他货源！</text>
+		<text class="empty-text">暂时没有相关信息！请查看其他信息！</text>
   </view>
   <view class="footer">
-    <view class="textarea" bindtap="carToEdit">发布空车信息</view>
+    <view class="textarea" bindtap="carToEdit">{{edit == '2' ? '输入货源信息' : '发布空车信息'}}</view>
     <button class="submit search" bindtap="showSearch">{{search}}</button>
   </view>
 </view>
 <view class="select-background" wx:if="{{showSelectCity}}">
   <view class="select-back-content">
-    <text class="select-title">点击省份搜索货源</text>
+    <text class="select-title">点击省份搜索{{searchInfo}}</text>
     <view class="select-content">
       <view class="select-content-name {{index == activeIndex ? 'selected-name' : ''}}" wx:for="{{list}}" data-index="{{index}}" data-id="{{item.provinceid}}" data-item="{{item.province}}" bindtap="selectedItem">{{item.province}}</view>
     </view>

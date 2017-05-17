@@ -5,7 +5,7 @@
 <view class="home">
   <scroll-view scroll-y="true" class="container" style="height:100%" bindscrolltolower="toLower">
     <view class="item1">
-      <image class="img" src="https://s.kcimg.cn/gisopic/avatar/wx_img.png" />
+      <image class="img" src="{{defaultImg}}" bindtap="changeImg" />
       <view class="user-info">
         <text class="nickname">
           {{nickname}}

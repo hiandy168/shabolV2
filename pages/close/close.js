@@ -5,6 +5,7 @@ Page({
   data:{
     userInfo: {},
     nickname: '',
+    defaultImg: 'https://s.kcimg.cn/gisopic/avatar/wx_img.png',
     avatar: '',
     isCarGo: '',
     messages:[],
@@ -110,7 +111,7 @@ Page({
       }
     })
   },
-  getLocalTime (date) {
+  getLocalTime (date) { // 更换时间
     var past = new Date(parseInt(date)*1000)
     var now = new Date()
     var time = (now-past)/1000
@@ -148,6 +149,19 @@ Page({
         that.setData({
           loadMore:true,
           showMsgAll: true
+        })
+      }
+    })
+  },
+  changeImg () { // 更换图片
+    var that = this
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        that.setData({
+          defaultImg: res.tempFilePaths
         })
       }
     })

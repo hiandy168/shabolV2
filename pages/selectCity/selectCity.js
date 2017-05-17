@@ -14,10 +14,27 @@ Page({
     end:false,
     activeIndex: -1,
     search: '搜索货源',
+    type: -1,  // 获取搜索车源还是货源
     scrollStatus:true,
     lastMessageId: ''
   },
   onLoad:function(options){
+    this.setData({
+      type: options.type
+    })
+    if(options.type == '1'){
+      this.setData({
+        searchInfo: '车源',
+        search: '搜索车源',
+        edit: options.edit
+      })
+    } else {
+      this.setData({
+        searchInfo: '货源',
+        search: '搜索货源',
+        edit: options.edit
+      })
+    }
     var cityList = wx.getStorageSync('cityList')
     if(cityList){
       this.setData({
@@ -56,29 +73,37 @@ Page({
         m:'getcitycargolist',
         provinceId:that.data.provinceId,
         page:that.data.page,
+        isCarGo: that.data.type,
         ts:+ new Date()
       },
       success:function(res){
-        var c = []
-        var data = res.data.data
-        for (let key in data) {
-          c.unshift(data[key])
+        if(res.data.data.info != '2'){
+          var c = []
+          var data = res.data.data
+          for (let key in data) {
+            c.unshift(data[key])
+          }
+          for (let key in c) {
+            c[key].add_time = that.getLocalTime(c[key].add_time)
+          }
+          // var a = that.data.province
+          // var replaceText = `<span class="keyWord">${a}</span>`
+          // for (let key in c) {
+          //   if(c[key].user_content.indexOf(a)){
+          //     c[key].user_content = c[key].user_content.replace(a,replaceText)
+          //   }
+          // }
+          that.setData({
+            messages:c,
+            lastMessageId:'maxlength',
+            loading:true
+          })
+        } else {
+          that.setData({
+            messages: [],
+            loading: true
+          })
         }
-        for (let key in c) {
-          c[key].add_time = that.getLocalTime(c[key].add_time)
-        }
-        // var a = that.data.province
-        // var replaceText = `<span class="keyWord">${a}</span>`
-        // for (let key in c) {
-        //   if(c[key].user_content.indexOf(a)){
-        //     c[key].user_content = c[key].user_content.replace(a,replaceText)
-        //   }
-        // }
-        that.setData({
-          messages:c,
-          lastMessageId:'maxlength',
-          loading:true
-        })
       }
     })
   },
@@ -99,6 +124,7 @@ Page({
         m:'getcitycargolist',
         provinceId:that.data.provinceId,
         page:that.data.page,
+        isCarGo: that.data.type,
         ts:+ new Date()
       },
       success:function(res){
@@ -187,9 +213,16 @@ Page({
     })
   },
   carToEdit () {  // 发布车源
-    wx.navigateTo({
-      url:'../add/add?edit=2'
-    })
+    if(this.data.edit == '2'){
+      wx.navigateTo({
+        url:'../add/add?edit=1'
+      })
+    } else {
+      wx.navigateTo({
+        url:'../add/add?edit=2'
+      })
+    }
+
   },
   toUpper:function(){ // 下拉加载
     if(this.data.end) return

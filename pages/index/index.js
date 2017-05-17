@@ -13,7 +13,8 @@ Page({
     loading:false,
     loadMore:true,
     scrollStatus:true,
-    type: '1'
+    type: '1',
+    searchInfo: '货源'
   },
   getRequest:function(id,suc,err){   //进行请求
 		wx.request({
@@ -74,7 +75,8 @@ Page({
     app.load = false
     this.setData({
       end:false,
-      chooseTab:true
+      chooseTab:true,
+      searchInfo: '货源'
     })
     if(!app.uid){
       util.getUserInfo(this.listRender,this)
@@ -86,7 +88,8 @@ Page({
     app.load = false
     this.setData({
       end:false,
-      chooseTab:false
+      chooseTab:false,
+      searchInfo: '车源'
     })
     if(!app.uid){
       util.getUserInfo(this.listRender,this)
@@ -141,9 +144,16 @@ Page({
     })
   },
   showTheSelectCity () {
-    wx.navigateTo({
-      url:'../selectCity/selectCity'
-    })
+    if(this.data.chooseTab){
+      wx.navigateTo({
+        url:'../selectCity/selectCity?type=1&edit=' + this.data.type
+      })
+    } else {
+      wx.navigateTo({
+        url:'../selectCity/selectCity?type=2&edit=' + this.data.type
+      })
+    }
+
   },
   saveUserInfo (unionId) {
     var that = this

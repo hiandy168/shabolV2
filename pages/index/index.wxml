@@ -25,10 +25,10 @@
   </scroll-view>
   <view class="footer" bindtap="goodsToEdit" wx:if="{{type == '2'}}">
     <view class="textarea">输入货源信息</view>
-    <button class="submit" disabled>发送</button>
+    <button class="submit search" bindtap="showTheSelectCity">搜索{{searchInfo}}</button>
   </view>
   <view wx:else class="footer">
     <view class="textarea" bindtap="carToEdit">发布空车信息</view>
-    <button class="submit search" bindtap="showTheSelectCity">搜索货源</button>
+    <button class="submit search" bindtap="showTheSelectCity">搜索{{searchInfo}}</button>
   </view>
 </view>
