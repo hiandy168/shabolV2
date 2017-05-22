@@ -13,16 +13,17 @@ Page({
     loadMore:true,
     end:false,
     activeIndex: -1,
-    search: '搜索货源',
+    search: '',
     type: -1,  // 获取搜索车源还是货源
     scrollStatus:true,
     lastMessageId: ''
   },
   onLoad:function(options){
+    console.log(options)
     this.setData({
       type: options.type
     })
-    if(options.type == '1'){
+    if(options.type == '2'){
       this.setData({
         searchInfo: '车源',
         search: '搜索车源',

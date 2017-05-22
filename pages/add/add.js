@@ -84,7 +84,7 @@ Page({
       var that = this
       app.republish = true
       var c = e.detail.value.textarea;   //获取textarea输入内容
-      var phoneNums = c.match(/1(([38]\d)|(4[57])|(5[012356789])|(7[013678]))\d{8}/g);  //匹配电话数组
+      var phoneNums = c.match(/1(([38]\d)|(4[57])|(5[012356789])|(7[0135678]))\d{8}/g);  //匹配电话数组
       if((that.data.inputValue || that.data.textValues) && phoneNums){  ///如果匹配到电话，就进行上传接口
         wx.showToast({
           title: '正在发布',

@@ -20,6 +20,12 @@
   display: block;
   color: #999;
 }
+.EditTips{
+  padding: 30rpx 80rpx;
+  font-size: 28rpx;
+  color: #999;
+  margin-top: 150rpx;
+}
 .submit{
   padding:0 14rpx;
   margin: 40rpx;

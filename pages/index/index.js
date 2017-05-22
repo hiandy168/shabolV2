@@ -7,13 +7,16 @@ Page({
     sharesContent:{},
     lastMessageId:'',
     messages:[],
+    messageContent: [],
     end:false,
     chooseTab:true,
-    mineUid:'',
+    showStatement: false,
+    unionId:'',
+    mineUid: '',
     loading:false,
     loadMore:true,
     scrollStatus:true,
-    type: '1',
+    type: '',
     searchInfo: '货源'
   },
   getRequest:function(id,suc,err){   //进行请求
@@ -44,8 +47,7 @@ Page({
         })
       }
       that.setData({
-        messages:data.list,
-        mineUid:app.uid
+        messages:data.list
       })
       that.setData({
         lastMessageId:'maxlength',
@@ -191,10 +193,21 @@ Page({
       success:function(res){
         var position = res.data.data.position
         if(position == '2' || position == '1'){
-          // that.setPositionType(position)
           that.setData({
             type: position
           })
+          // 获取到type才能设置分享 否则无法获取
+          app.getUserInfo(function(userInfo){
+            let nickname = userInfo.nickName
+            let avatar = userInfo.avatarUrl
+        		that.setData({
+              userInfo:userInfo,
+              sharesContent:{
+                title:that.data.type == '1' ? nickname + "的车源" : nickname + "的货源",
+                path:'/pages/close/close?unionId=' + that.data.unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
+              }
+        		})
+        	})
         } else {
           wx.hideShareMenu()
         }
@@ -222,14 +235,7 @@ Page({
         select:e.from
       })
     }else{
-      // var chooseType = wx.getStorageSync('chooseType')
-      // if (chooseType) {  // 选择完身份存在缓存
-      //   this.setData({
-      //     type:chooseType.type
-      //   })
-      // } else {
-        util.getUserInfo(this.searchType,this)
-      // }
+      util.getUserInfo(this.searchType,this)
     }
     if(!app.uid){
       util.getUserInfo(this.listRender,this)
@@ -238,17 +244,10 @@ Page({
     }
     var that = this
     var unionId = wx.getStorageSync('unionId')
-    app.getUserInfo(function(userInfo){
-      let nickname = userInfo.nickName
-      let avatar = userInfo.avatarUrl
-  		that.setData({
-        userInfo:userInfo,
-        sharesContent:{
-          title:that.data.type == '1' ? nickname + "的车源" : nickname + "的货源",
-          path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
-        }
-  		})
-  	})
+    var mineUid = wx.getStorageSync('userid')
+    that.setData({
+      mineUid: mineUid
+    })
     if(unionId && that.data.select){
       that.saveUserInfo(unionId)
     }
@@ -259,6 +258,19 @@ Page({
     }else{
       this.loaded = true
     }
+  },
+  callToUs () {
+    wx.makePhoneCall({
+      phoneNumber:'15710036003',
+      success:function(){
+        util.analytics({
+          t:'event',
+          ec:'点击拨打客服电话',
+          ea:'',
+          el:'15710036003'
+    		})
+      }
+    })
   },
   makePhoneCall:function(e){
     var item = e.target.dataset.item
@@ -283,6 +295,18 @@ Page({
   carToEdit () {
     wx.navigateTo({
       url:'../add/add?edit=2'
+    })
+  },
+  showStatement () { // 显示声明
+    this.setData({
+      showStatement: true,
+      scrollStatus: false
+    })
+  },
+  cancleStatement () { // 取消声明
+    this.setData({
+      showStatement: false,
+      scrollStatus: true
     })
   },
   onShareAppMessage:function(){

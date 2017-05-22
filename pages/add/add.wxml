@@ -21,4 +21,7 @@
       <text>否则会被当成闲聊，发布不成功哦</text>
     </view>
   </view>
+  <view class="EditTips" wx:if="{{edit == 2}}">
+    如遇信息部电话，尤其是给出诱人的运价，请仔细确认货源真实性，以防上当受骗！
+  </view>
 </form>
