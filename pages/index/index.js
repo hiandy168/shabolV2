@@ -13,6 +13,7 @@ Page({
     showStatement: false,
     unionId:'',
     mineUid: '',
+    exist: false,
     loading:false,
     loadMore:true,
     scrollStatus:true,
@@ -103,6 +104,7 @@ Page({
     if(app.load) return;
     app.load = true;   /// 判断是否在进行loadmore
     var id = this.data.messages[0].id
+    console.log(id)
     this.setData({
       loadMore:false,
       scrollStatus:false
@@ -111,15 +113,14 @@ Page({
       var data = res.data;
       if(data.info == 1){
         this.setData({
-          messages :data.list.concat(this.data.messages)
-        });
-        setTimeout(() => {
-          this.setData ({
-            lastMessageId :'item_' + id,
-            loadMore:true,
-            scrollStatus:true
-          })
-        }, 0)
+          messages :data.list.concat(this.data.messages),
+          scrollStatus: true
+        })
+        this.setData ({
+          lastMessageId: 'item_' + id,
+          loadMore: true
+        })
+        console.log(id,'结束后1')
         app.load = false;
       }else{
         this.setData({
@@ -131,7 +132,7 @@ Page({
     })
   },
   toUpper:function(){ // 下拉加载
-    if(app.load) return
+    if (app.load) return
     this.loadMore()
   },
   carType (type) {
@@ -196,6 +197,8 @@ Page({
           that.setData({
             type: position
           })
+          // 没有unionid 无法获取个人中心页。
+          var unionId = wx.getStorageSync('unionId')
           // 获取到type才能设置分享 否则无法获取
           app.getUserInfo(function(userInfo){
             let nickname = userInfo.nickName
@@ -204,7 +207,7 @@ Page({
               userInfo:userInfo,
               sharesContent:{
                 title:that.data.type == '1' ? nickname + "的车源" : nickname + "的货源",
-                path:'/pages/close/close?unionId=' + that.data.unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
+                path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
               }
         		})
         	})
@@ -226,7 +229,7 @@ Page({
     if(this.loaded) return;
     if(e.chooseTab){  // 判断是否通过添加页面跳转回来的
       this.setData({
-        chooseTab:false
+        chooseTab:e.chooseTab
       })
     }
     if(e.from){  // 判断是否通过选择身份进入的
@@ -275,6 +278,7 @@ Page({
   makePhoneCall:function(e){
     var item = e.target.dataset.item
     var content = e.target.dataset.content
+    var id = e.target.dataset.id
     wx.makePhoneCall({
       phoneNumber:item,
       success:function(){
@@ -284,7 +288,49 @@ Page({
           ea:content,
           el:item
     		})
+        wx.request({
+          url: app.ajaxurl,
+          data: {
+            c: 'carnewapi',
+            m: 'savephoneclick',
+            id: id,
+            ts: +new Date()
+          },
+          success:function(res){
+            console.log(res)
+          }
+        })
       }
+    })
+  },
+  showCarModel (e) {
+    var item = e.target.dataset.item
+    var content = e.target.dataset.content
+    wx.showModal({
+      title: '提示',
+      content: '请联系客服认证身份，才能看到车主电话，谢谢！客服电话：15710036003',
+      confirmText: '联系客服',
+      success: function(res) {
+        if (res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber:'15710036003',
+            success:function(){
+              util.analytics({
+                t:'event',
+                ec:'点击联系客服',
+                ea:'',
+                el:'15710036003'
+          		})
+            }
+          })
+        }
+      }
+    })
+    util.analytics({
+      t:'event',
+      ec:'点击拨打车源电话',
+      ea:content,
+      el:item
     })
   },
   goodsToEdit:function(){

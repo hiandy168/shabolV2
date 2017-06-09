@@ -30,14 +30,16 @@
       </view>
       <view class="item-content">
         <text class="item-text" selectable>{{message.user_content}}</text>
-        <view wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
+        <view wx:if="{{chooseTab}}" wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}"
+        data-id="{{message.id}}" bindtap="makePhoneCall">{{item}}</view>
+        <view wx:if="{{!chooseTab}}" wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="showCarModel">{{item}}</view>
         <view>联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
       </view>
     </view>
     <view id="maxlength" style="height:100rpx;"></view>
   </scroll-view>
-  <view class="footer" bindtap="goodsToEdit" wx:if="{{type == '2'}}">
-    <view class="textarea">输入货源信息</view>
+  <view class="footer" wx:if="{{type == '2'}}">
+    <view class="textarea" bindtap="goodsToEdit">输入货源信息</view>
     <button class="submit search" bindtap="showTheSelectCity">搜索{{searchInfo}}</button>
   </view>
   <view wx:else class="footer">

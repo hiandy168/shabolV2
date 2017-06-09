@@ -125,7 +125,7 @@ Page({
                 }else{
                   if(that.data.edit == '1'){
                     wx.redirectTo({
-                      url:'../close/close?unionId=' + that.data.unionId + '&nickname=' + that.data.userName + '&avatar=' + that.data.photo + '&isCarGo=' + that.data.edit
+                      url:'../index/index?chooseTab=' + true
                     })
                   }else{
                     wx.redirectTo({

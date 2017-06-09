@@ -15,8 +15,8 @@ Page({
     activeIndex: -1,
     search: '',
     type: -1,  // 获取搜索车源还是货源
-    scrollStatus:true,
-    lastMessageId: ''
+    lastMessageId: '',
+    scrollStatus: true
   },
   onLoad:function(options){
     console.log(options)
@@ -116,7 +116,7 @@ Page({
     that.setData({
 				page:that.data.page + 1,
         loadMore:false,
-        scrollStatus:false
+        scrollStatus: false
 			})
     wx.request({  // 省份筛选
       url:app.ajaxurl,
@@ -138,20 +138,20 @@ Page({
             c[key].add_time = that.getLocalTime(c[key].add_time)
           }
           that.setData({
-            messages:c.concat(that.data.messages)
+            messages:c.concat(that.data.messages),
+            scrollStatus: true
           })
           setTimeout(() => {
             that.setData ({
               lastMessageId :'item_' + id,
-              loadMore:true,
-              scrollStatus:true
+              loadMore:true
             })
           }, 0)
         } else {
           that.setData({
             end:true,
             loadMore:true,
-            scrollStatus:true
+            scrollStatus: true
           })
         }
         app.load = false
@@ -175,18 +175,47 @@ Page({
   },
   makePhoneCall:function(e){ // 拨打电话
     var item = e.target.dataset.item
-    var contetn = e.target.dataset.content
-    wx.makePhoneCall({
-      phoneNumber:item,
-      success:function(){
-        util.analytics({
-          t:'event',
-          ec:'点击拨打货源电话',
-          ea:content,
-          el:item
-    		})
-      }
-    })
+    var content = e.target.dataset.content
+    if (this.data.type == '2') { // 车源筛选
+      wx.showModal({
+        title: '提示',
+        content: '请联系客服认证身份，才能看到车主电话，谢谢！客服电话：15710036003',
+        confirmText: '联系客服',
+        success: function(res) {
+          if (res.confirm) {
+            wx.makePhoneCall({
+              phoneNumber:'15710036003',
+              success:function(){
+                util.analytics({
+                  t:'event',
+                  ec:'点击联系客服',
+                  ea:'',
+                  el:'15710036003'
+            		})
+              }
+            })
+          }
+        }
+      })
+      util.analytics({
+        t:'event',
+        ec:'点击拨打车源电话',
+        ea:content,
+        el:item
+      })
+    } else {
+      wx.makePhoneCall({
+        phoneNumber:item,
+        success:function(){
+          util.analytics({
+            t:'event',
+            ec:'点击拨打货源电话',
+            ea:content,
+            el:item
+      		})
+        }
+      })
+    }
   },
   selectedItem (e) { // 选择省份
     if(e.target.dataset.item == this.data.province) return

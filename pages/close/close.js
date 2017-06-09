@@ -55,6 +55,7 @@ Page({
   },
   onLoad:function(options){
     // 页面初始化 options为页面跳转所带来的参数
+    console.log(options)
     var that = this
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
@@ -99,6 +100,7 @@ Page({
   makePhoneCall:function(e){
     var item = e.target.dataset.item;
     var content = e.target.dataset.content
+    var id = e.target.dataset.id
     wx.makePhoneCall({
       phoneNumber:item,
       success:function(){
@@ -108,6 +110,18 @@ Page({
           ea:content,
           el:item
     		})
+        wx.request({
+          url: app.ajaxurl,
+          data: {
+            c: 'carnewapi',
+            m: 'savephoneclick',
+            id: id,
+            ts: +new Date()
+          },
+          success:function(res){
+            console.log(res)
+          }
+        })
       }
     })
   },

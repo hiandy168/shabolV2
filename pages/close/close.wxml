@@ -22,7 +22,7 @@
         </view>
         <view class="item-content">
           <text class="item-text">{{message.user_content}}</text>
-          <view class="item-phone" wx:for="{{message.phone_num[0]}}" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
+          <view class="item-phone" wx:for="{{message.phone_num[0]}}" data-item="{{item}}" data-id="{{message.id}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
           <view class="concatUs">联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
         </view>
       </view>
