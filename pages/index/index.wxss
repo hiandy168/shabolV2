@@ -121,6 +121,19 @@
   position: relative;
   padding-top:40rpx;
   min-height: 70rpx;
+  margin-top: 20rpx;
+}
+.showTime{
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height:40rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  white-space: nowrap;
+  color: #999;
+  left: 0;
+  top: 0;
 }
 .default{
   padding-left:110rpx;

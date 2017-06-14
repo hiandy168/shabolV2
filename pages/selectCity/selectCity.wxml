@@ -8,7 +8,7 @@
     <view class="noMore" wx:if="{{end}}">没有更多了~</view>
     <view class="item default" wx:for="{{messages}}" wx:key="id" wx:for-item="message" id="item_{{message.id}}">
       <view class="showTime">{{message.add_time}}</view>
-      <image class="avatar" src="{{message.user_photo}}" />
+      <image class="avatar" src="{{message.user_photo}}" bindtap="jumpToUserCenter" data-nickname="{{message.user_name}}" data-avatar="{{message.user_photo}}" data-unionid="{{message.unionId}}" />
       <view class="nickname">
         <text>{{message.user_name}}</text>
       </view>

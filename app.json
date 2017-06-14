@@ -3,9 +3,7 @@
     "pages/selectUser",
     "pages/index/index",
 		"pages/add/add",
-		"pages/user/user",
 		"pages/close/close",
-    "pages/another/another",
     "pages/selectCity/selectCity"
   ],
   "window":{

@@ -12,7 +12,7 @@
   <view class="stateContent" wx:if="{{showStatement}}">
     <view class="stateMsg">
       <view class="stateTitle">极速配万人群只提供信息发布查看渠道，不对信息的真实性承担法律责任，请谨慎交易！</view>
-      <view class="stateConcat">如遇虚假信息，请联系客服举报：<text class="statePhone" bindtap="callToUs">15710036003</text></view>
+      <view class="stateConcat">如遇虚假信息，请联系客服举报：<text class="statePhone" bindtap="callToUs">15010638696</text></view>
     </view>
     <view class="stateCancle" bindtap="cancleStatement">取消</view>
   </view>
@@ -24,7 +24,8 @@
   <scroll-view scroll-y="{{scrollStatus}}" class="content" style="height:100%" scroll-into-view="{{lastMessageId}}" bindscrolltoupper="toUpper" upper-threshold="50">
     <view class="noMore" wx:if="{{end}}">没有更多了~</view>
     <view class="item {{mineUid == message.open_id ? 'mine' : 'default'}}" wx:for="{{messages}}" wx:key="id" wx:for-item="message" id="item_{{message.id}}">
-      <image class="avatar" src="{{message.user_photo}}" />
+      <view class="showTime">{{message.add_time}}</view>
+      <image class="avatar" src="{{message.user_photo}}" bindtap="jumpToUserCenter" data-nickname="{{message.user_name}}" data-avatar="{{message.user_photo}}" data-unionid="{{message.unionId}}" />
       <view class="nickname" wx:if="{{mineUid != message.open_id}}">
         <text>{{message.user_name}}</text>
       </view>

@@ -59,6 +59,21 @@ const _exports = {
         url:'https://www.google-analytics.com/collect',
         data:d
     });
+  },
+  getLocalTime (date) {  // 转换时间
+    var past = new Date(parseInt(date)*1000)
+    var now = new Date()
+    var yestoday = new Date() - 24*60*60*1000
+    var time = (now-past)/1000
+    if (new Date(past).toDateString() === new Date().toDateString()) {
+      return '今天'
+    } else if((now.getDate() - 1) === past.getDate()){
+      return '昨天'
+    } else {
+      var m = (past.getMonth()+1 < 10 ? '0'+(past.getMonth()+1) : past.getMonth()+1)
+      var d = (past.getDate() < 10 ? '0'+(past.getDate()) : past.getDate())
+      return m + '月' + d + '日'
+    }
   }
 }
 module.exports = _exports;

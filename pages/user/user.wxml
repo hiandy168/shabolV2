@@ -1,7 +1,0 @@
-<page>
-  <import src="../../components/userinfo/userinfo.wxml" />
-  <template is="userinfo" data="{{userInfo}}" />
-  <navigator class="publish" url="../close/close" open-type="navigate">
-      <text>我发布的货源</text>
-  </navigator>
-</page>

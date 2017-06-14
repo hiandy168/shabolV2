@@ -47,8 +47,15 @@ Page({
           end:true
         })
       }
+      var c = []
+      for (let key in data.list) {
+        c.push(data.list[key])
+      }
+      for (let key in c) {
+        c[key].add_time = util.getLocalTime(c[key].add_time)
+      }
       that.setData({
-        messages:data.list
+        messages:c
       })
       that.setData({
         lastMessageId:'maxlength',
@@ -112,8 +119,15 @@ Page({
     this.getRequest(id,(res)=>{
       var data = res.data;
       if(data.info == 1){
+        var c = []
+        for (let key in data.list) {
+          c.push(data.list[key])
+        }
+        for (let key in c) {
+          c[key].add_time = util.getLocalTime(c[key].add_time)
+        }
         this.setData({
-          messages :data.list.concat(this.data.messages),
+          messages: c.concat(this.data.messages),
           scrollStatus: true
         })
         this.setData ({
@@ -264,13 +278,13 @@ Page({
   },
   callToUs () {
     wx.makePhoneCall({
-      phoneNumber:'15710036003',
+      phoneNumber:'15010638696',
       success:function(){
         util.analytics({
           t:'event',
           ec:'点击拨打客服电话',
           ea:'',
-          el:'15710036003'
+          el:'15010638696'
     		})
       }
     })
@@ -308,18 +322,18 @@ Page({
     var content = e.target.dataset.content
     wx.showModal({
       title: '提示',
-      content: '请联系客服认证身份，才能看到车主电话，谢谢！客服电话：15710036003',
+      content: '请联系客服认证身份，才能看到车主电话，谢谢！客服电话：15010638696',
       confirmText: '联系客服',
       success: function(res) {
         if (res.confirm) {
           wx.makePhoneCall({
-            phoneNumber:'15710036003',
+            phoneNumber:'15010638696',
             success:function(){
               util.analytics({
                 t:'event',
                 ec:'点击联系客服',
                 ea:'',
-                el:'15710036003'
+                el:'15010638696'
           		})
             }
           })
@@ -353,6 +367,15 @@ Page({
     this.setData({
       showStatement: false,
       scrollStatus: true
+    })
+  },
+  jumpToUserCenter (e) { // 跳转个人中心
+    var that = this
+    var nickname = e.target.dataset.nickname
+    var avatar = e.target.dataset.avatar
+    var unionId = e.target.dataset.unionid
+    wx.navigateTo({
+      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.chooseTab ? '1' : '2')
     })
   },
   onShareAppMessage:function(){

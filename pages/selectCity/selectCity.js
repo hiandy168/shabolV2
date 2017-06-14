@@ -85,7 +85,7 @@ Page({
             c.unshift(data[key])
           }
           for (let key in c) {
-            c[key].add_time = that.getLocalTime(c[key].add_time)
+            c[key].add_time = util.getLocalTime(c[key].add_time)
           }
           // var a = that.data.province
           // var replaceText = `<span class="keyWord">${a}</span>`
@@ -135,7 +135,7 @@ Page({
             c.unshift(res.data.data[key])
           }
           for (let key in c) {
-            c[key].add_time = that.getLocalTime(c[key].add_time)
+            c[key].add_time = util.getLocalTime(c[key].add_time)
           }
           that.setData({
             messages:c.concat(that.data.messages),
@@ -157,21 +157,6 @@ Page({
         app.load = false
       }
     })
-  },
-  getLocalTime (date) {  // 转换时间
-    var past = new Date(parseInt(date)*1000)
-    var now = new Date()
-    var yestoday = new Date() - 24*60*60*1000
-    var time = (now-past)/1000
-    if (new Date(past).toDateString() === new Date().toDateString()) {
-      return '今天'
-    } else if((now.getDate() - 1) === past.getDate()){
-      return '昨天'
-    } else {
-      var m = (past.getMonth()+1 < 10 ? '0'+(past.getMonth()+1) : past.getMonth()+1)
-      var d = (past.getDate() < 10 ? '0'+(past.getDate()) : past.getDate())
-      return m + '月' + d + '日'
-    }
   },
   makePhoneCall:function(e){ // 拨打电话
     var item = e.target.dataset.item
@@ -253,6 +238,16 @@ Page({
       })
     }
 
+  },
+  jumpToUserCenter (e) { // 跳转个人中心
+    var that = this
+    console.log(e)
+    var nickname = e.target.dataset.nickname
+    var avatar = e.target.dataset.avatar
+    var unionId = e.target.dataset.unionid
+    wx.navigateTo({
+      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.chooseTab ? '1' : '2')
+    })
   },
   toUpper:function(){ // 下拉加载
     if(this.data.end) return

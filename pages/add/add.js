@@ -3,7 +3,6 @@ Page({
   data:{
     edit: -1,
     inputValue:'',
-    unionId: '',
     photo:'',
     userName:'',
     placeholder:true,
@@ -19,43 +18,18 @@ Page({
       title:options.edit == '2' ? '发布车源' : '发布货源'
     })
     var that = this
-    var unionId = wx.getStorageSync('unionId')
-    if(app.globalData.userInfo == null){ // 如果没有user信息，重新授权获取
-      if(app.authSetting) return
-      wx.openSetting({
-        success:(res)=>{
-          if(!res.authSetting["scope.userInfo"]){
-              app.authSetting = false
-            // 拒绝授权
-          } else {
-            app.authSetting = true
-          }
-          wx.getUserInfo({
-            success: function (res) {
-              that.setData({
-                userName:res.userInfo.nickName,
-                photo:res.userInfo.avatarUrl
-              })
-              wx.setStorage({
-                key:"userInfo",
-                data:{
-                  userName:res.userInfo.nickName,
-                  photo:res.userInfo.avatarUrl
-                }
-              })
-            }
-          })
-        }
-      })
+    var userInfo = wx.getStorageSync('userInfo')
+    if(!userInfo || userInfo == ''){ // 如果没有user信息，重新授权获取
+      that.getSetting()
     } else {  // 如果有直接读缓存
       app.authSetting = true
+      that.getClipBoard()
       wx.getStorage({
         key: 'userInfo',
         success: function(res) {
           that.setData({
             photo:res.data.photo,
-            userName:res.data.userName,
-            unionId: unionId
+            userName:res.data.userName
           })
         }
       })
@@ -65,6 +39,70 @@ Page({
     this.setData({
       placeholder:false
     })
+  },
+  getSetting () {  // 拒绝授权的时候，自动跳转到授权页获取个人信息
+    var that = this
+    if (wx.getSetting) {
+      wx.getSetting({
+        success:(r) => {
+          if (!r.authSetting["scope.userInfo"]){
+            wx.openSetting({
+              success: (res) =>{
+                wx.setStorage({
+                  key:"userInfo",
+                  data:{
+                    userName:res.userInfo.nickName,
+                    photo:res.userInfo.avatarUrl
+                  }
+                })
+                that.setData({
+                  photo:res.userInfo.avatarUrl,
+                  userName:res.userInfo.nickName
+                })
+                that.getClipBoard()
+                app.authSetting = true
+              }
+            })
+          }
+        }
+      })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
+  },
+  getClipBoard () {  // 获取剪切板
+    var that = this
+    if (wx.getClipboardData) {
+      wx.getClipboardData({
+        success: function(res){
+          if (trims(res.data) !== '') {
+            wx.showModal({ // 弹窗
+              title: '剪切板内容',
+              content: res.data,
+              confirmText: '粘贴',
+              success (r) {
+                if (r.confirm) { // 点击确定
+                  that.setData({
+                    placeholder:false,
+                    textValues: res.data
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
   },
   blur:function(){  // 失去焦点
     if(trims(this.data.inputValue || trims(this.data.textValues)) == ''){
@@ -120,18 +158,14 @@ Page({
               })
               setTimeout(() => {
                 wx.hideToast()
-                if(that.data.unionId == ''){
-                  wx.navigateBack()
+                if(that.data.edit == '1'){
+                  wx.redirectTo({
+                    url:'../index/index?chooseTab=' + true
+                  })
                 }else{
-                  if(that.data.edit == '1'){
-                    wx.redirectTo({
-                      url:'../index/index?chooseTab=' + true
-                    })
-                  }else{
-                    wx.redirectTo({
-                      url:'../index/index?chooseTab=' + false
-                    })
-                  }
+                  wx.redirectTo({
+                    url:'../index/index?chooseTab=' + false
+                  })
                 }
               }, 1500)
             }
