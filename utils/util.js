@@ -1,4 +1,5 @@
-let app = getApp();
+let app = getApp(),
+    UT = require('./request.js');
 function formatTime(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
@@ -87,6 +88,51 @@ const _exports = {
       var arr = [d,(m + '月')]
       return arr
     }
+  },
+  getSetting (suc) {  // 拒绝授权的时候，自动跳转到授权页获取个人信息
+    var that = this
+    if (wx.getSetting) {
+      wx.getSetting({ // 获取授权状态
+        success:(r) => {
+          if (!r.authSetting["scope.userInfo"]){
+            wx.openSetting({ // 打开设置
+              success:function(res){
+                UT.isFunction(suc) && suc(res.data)
+              }
+            })
+          }
+        }
+      })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
+  },
+  getClipBoard (suc,err) {  // 获取剪切板
+    var that = this
+    if (wx.getClipboardData) {
+      wx.getClipboardData({
+        success:function(res){
+          UT.isFunction(suc) && suc(res.data)
+        },
+        fail:function(res){
+          UT.isFunction(err) && err(res.data)
+        }
+      })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
   }
+}
+function trims(str){  //去除前面空格
+  var str = str.replace(/^\s*/g,"")
+  return str
 }
 module.exports = _exports;

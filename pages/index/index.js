@@ -217,6 +217,17 @@ Page({
           app.getUserInfo(function(userInfo){
             let nickname = userInfo.nickName
             let avatar = userInfo.avatarUrl
+            // 货主登陆统计
+            if (unionId && position == '2') {
+              util.analytics({
+                t:'event',
+                ec:'货主登陆',
+                ea:'货主登陆',
+                el:nickname
+              })
+              app.searchType = true
+              console.log('货主登陆')
+            }
         		that.setData({
               userInfo:userInfo,
               sharesContent:{
@@ -240,7 +251,6 @@ Page({
     })
   },
   onLoad: function (e) {
-    console.log(e)
     if(this.loaded) return;
     if(e.chooseTab){  // 判断是否通过添加页面跳转回来的
       this.setData({
@@ -272,7 +282,12 @@ Page({
   },
   onShow:function(){
     if(this.loaded){
-      this.listRender(app.uid,this);
+      this.listRender(app.uid,this)
+      let userInfo = wx.getStorageSync('userInfo')
+      if (userInfo && !app.searchType) {
+        util.getUserInfo(this.searchType,this)
+        app.searchType = true
+      }
     }else{
       this.loaded = true
     }
