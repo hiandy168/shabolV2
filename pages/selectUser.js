@@ -6,29 +6,15 @@ Page({
     unionId: '',
     openId: '',
     userInfo: {},
-    loading:false,
     show:true,
     index: ''
   },
   onLoad:function(options){
-    // var chooseType = wx.getStorageSync('chooseType')
-    // if(chooseType){
-    //   if(chooseType.type == '1'){
-    //     wx.redirectTo({
-    //       url:'./index/index?type=1'
-    //     })
-    //   } else {
-    //     wx.redirectTo({
-    //       url:'./index/index?type=2'
-    //     })
-    //   }
-    // } else {
-      if(!app.uid){
-        util.getUserInfo(this.searchType,this)
-      }else{
-        this.searchType(app.uid,this)
-      }
-    // }
+    if(!app.uid){
+      util.getUserInfo(this.searchType,this)
+    }else{
+      this.searchType(app.uid,this)
+    }
   },
   searchType (...options){
     let that = this
@@ -54,30 +40,17 @@ Page({
             show:false
           })
         }
-        that.setData({
-          loading:true
-        })
       }
     })
   },
   carOwner:function(e){
-    // this.setType('1')
     wx.redirectTo({
       url:'index/index?type=1&from=select'
     })
   },
   goodsOwner:function(e){
-    // this.setType('2')
     wx.redirectTo({
       url:'index/index?type=2&from=select'
-    })
-  },
-  setType (type) {
-    wx.setStorage({
-      key:"chooseType",
-      data:{
-        type: type
-      }
     })
   }
 })

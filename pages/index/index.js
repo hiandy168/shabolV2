@@ -221,7 +221,7 @@ Page({
               userInfo:userInfo,
               sharesContent:{
                 title:that.data.type == '1' ? nickname + "的车源" : nickname + "的货源",
-                path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1')
+                path:'/pages/close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.type == '1' ? '2' : '1') + '&openid=' + that.data.mineUid
               }
         		})
         	})
@@ -240,6 +240,7 @@ Page({
     })
   },
   onLoad: function (e) {
+    console.log(e)
     if(this.loaded) return;
     if(e.chooseTab){  // 判断是否通过添加页面跳转回来的
       this.setData({
@@ -369,13 +370,22 @@ Page({
       scrollStatus: true
     })
   },
-  jumpToUserCenter (e) { // 跳转个人中心
+  jumpToUserCenter (e) { // 跳转别人个人中心
+    console.log(e)
     var that = this
     var nickname = e.target.dataset.nickname
     var avatar = e.target.dataset.avatar
     var unionId = e.target.dataset.unionid
+    var openid = e.target.dataset.openid
     wx.navigateTo({
-      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.chooseTab ? '1' : '2')
+      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.chooseTab ? '1' : '2') + '&openid=' + encodeURIComponent(openid)
+    })
+  },
+  jumpToMineCenter () { // 跳转自己个人中心
+    var unionId = wx.getStorageSync('unionId')
+    if(!unionId) return
+    wx.navigateTo({
+      url: '../close/close?unionId=' + unionId + '&nickname=' + this.data.userInfo.nickName + '&avatar=' + this.data.userInfo.avatarUrl + '&isCarGo=' + (this.data.type == '2' ? '1' : '2') + '&openid=' + this.data.mineUid
     })
   },
   onShareAppMessage:function(){

@@ -74,6 +74,19 @@ const _exports = {
       var d = (past.getDate() < 10 ? '0'+(past.getDate()) : past.getDate())
       return m + '月' + d + '日'
     }
+  },
+  personLocalTime (date) { // 更换时间
+    var past = new Date(parseInt(date)*1000)
+    var now = new Date()
+    var time = (now-past)/1000
+    if (new Date(past).toDateString() === new Date().toDateString()) {
+      return '今天'
+    } else {
+      var m = (past.getMonth()+1 < 10 ? '0'+(past.getMonth()+1) : past.getMonth()+1)
+      var d = (past.getDate() < 10 ? '0'+(past.getDate()) : past.getDate())
+      var arr = [d,(m + '月')]
+      return arr
+    }
   }
 }
 module.exports = _exports;

@@ -1,11 +1,10 @@
 <import src="../../components/loading/loading.wxml"/>
-<import src="../../components/share/share.wxml" />
 <template is="loading" data="{{loading}}"/>
-<template is="share" data="{{shareHidden}}" wx:if="mineUid == unionId" />
 <view class="home">
   <scroll-view scroll-y="true" class="container" style="height:100%" bindscrolltolower="toLower">
     <view class="item1">
-      <image class="img" src="{{defaultImg}}" bindtap="changeImg" />
+      <!-- <image class="img" src="{{defaultImg}}" wx:if="{{mineUid == openid}}" /> -->
+      <image class="img" src="{{defaultImg}}" />
       <view class="user-info">
         <text class="nickname">
           {{nickname}}
@@ -14,7 +13,7 @@
       </view>
     </view>
     <view class="content" wx:if="{{messages.length}}">
-      <view class="item" wx:for="{{messages}}" wx:for-item="message" wx:for-index="index">
+      <view class="item" wx:for="{{messages}}" wx:key="mine_{{message.id}}" wx:for-item="message" wx:for-index="index">
         <text class="today-time" wx:if="{{message.add_time == '今天'}}">{{message.add_time}}</text>
         <view class="date-time" wx:else>
           <text class="day-time">{{message.add_time[0]}}</text>
@@ -33,5 +32,9 @@
     </view>
     <view wx:if="{{showMsgAll}}" class="showMsgAll">~以上为全部信息~</view>
   </scroll-view>
-  <view class="newMsg" bindtap="jumpToHome"><text class="newMsgText">查看更多货源</text></view>
+  <!-- <view class="newMsg" bindtap="jumpToHome"><text class="newMsgText">查看更多货源</text></view> -->
+  <view class="footer-menu">
+    <button class="share-btn" open-type="share">转发</button>
+    <text class="lookmore" bindtap="jumpToHome">查看更多货源</text>
+  </view>
 </view>

@@ -245,8 +245,9 @@ Page({
     var nickname = e.target.dataset.nickname
     var avatar = e.target.dataset.avatar
     var unionId = e.target.dataset.unionid
+    var openid = e.target.dataset.openid
     wx.navigateTo({
-      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + (that.data.chooseTab ? '1' : '2')
+      url: '../close/close?unionId=' + unionId + '&nickname=' + nickname + '&avatar=' + avatar + '&isCarGo=' + that.data.type + '&openid=' + encodeURIComponent(openid)
     })
   },
   toUpper:function(){ // 下拉加载

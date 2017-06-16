@@ -25,7 +25,8 @@
     <view class="noMore" wx:if="{{end}}">没有更多了~</view>
     <view class="item {{mineUid == message.open_id ? 'mine' : 'default'}}" wx:for="{{messages}}" wx:key="id" wx:for-item="message" id="item_{{message.id}}">
       <view class="showTime">{{message.add_time}}</view>
-      <image class="avatar" src="{{message.user_photo}}" bindtap="jumpToUserCenter" data-nickname="{{message.user_name}}" data-avatar="{{message.user_photo}}" data-unionid="{{message.unionId}}" />
+      <image class="avatar" wx:if="{{chooseTab}}" src="{{message.user_photo}}" bindtap="jumpToUserCenter" data-nickname="{{message.user_name}}" data-avatar="{{message.user_photo}}" data-unionid="{{message.unionId}}" data-openid="{{message.open_id}}" />
+      <image class="avatar" wx:else src="{{message.user_photo}}" />
       <view class="nickname" wx:if="{{mineUid != message.open_id}}">
         <text>{{message.user_name}}</text>
       </view>
@@ -40,10 +41,12 @@
     <view id="maxlength" style="height:100rpx;"></view>
   </scroll-view>
   <view class="footer" wx:if="{{type == '2'}}">
+    <image class="footer-avatar" src="{{userInfo.avatarUrl}}" bindtap="jumpToMineCenter" />
     <view class="textarea" bindtap="goodsToEdit">输入货源信息</view>
     <button class="submit search" bindtap="showTheSelectCity">搜索{{searchInfo}}</button>
   </view>
   <view wx:else class="footer">
+    <image class="footer-avatar" src="{{userInfo.avatarUrl}}" bindtap="jumpToMineCenter" />
     <view class="textarea" bindtap="carToEdit">发布空车信息</view>
     <button class="submit search" bindtap="showTheSelectCity">搜索{{searchInfo}}</button>
   </view>
