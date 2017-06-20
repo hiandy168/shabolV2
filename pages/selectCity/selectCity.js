@@ -88,7 +88,7 @@ Page({
             c[key].add_time = util.getLocalTime(c[key].add_time)
           }
           // var a = that.data.province
-          // var replaceText = `<span class="keyWord">${a}</span>`
+          // var replaceText = `<text class="keyWord">${a}</text>`
           // for (let key in c) {
           //   if(c[key].user_content.indexOf(a)){
           //     c[key].user_content = c[key].user_content.replace(a,replaceText)

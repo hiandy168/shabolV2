@@ -57,10 +57,24 @@ Page({
     } else {  // 如果有直接读缓存
       app.authSetting = true
       util.getClipBoard((res)=>{
-        if (trims(res) !== '') {
+        if (trims(res) !== '' && trims(res).length < 400) {
           wx.showModal({ // 弹窗
             title: '剪切板内容',
-            content: res,
+            content: res.replace(/\n(\n)*( )*(\n)*\n/g, "\n"),
+            confirmText: '粘贴',
+            success (r) {
+              if (r.confirm) { // 点击确定
+                that.setData({
+                  placeholder:false,
+                  textValues: res
+                })
+              }
+            }
+          })
+        } else if (trims(res).length >= 400) {
+          wx.showModal({ // 弹窗
+            title: '剪切板内容',
+            content: res.replace(/\n(\n)*( )*(\n)*\n/g, "\n").substring(0,400),
             confirmText: '粘贴',
             success (r) {
               if (r.confirm) { // 点击确定
