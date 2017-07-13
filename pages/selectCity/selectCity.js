@@ -87,13 +87,9 @@ Page({
           for (let key in c) {
             c[key].add_time = util.getLocalTime(c[key].add_time)
           }
-          // var a = that.data.province
-          // var replaceText = `<text class="keyWord">${a}</text>`
-          // for (let key in c) {
-          //   if(c[key].user_content.indexOf(a)){
-          //     c[key].user_content = c[key].user_content.replace(a,replaceText)
-          //   }
-          // }
+          // 替换关键字
+          let a = that.data.province
+          util.replaceKeyWord(c,a)
           that.setData({
             messages:c,
             lastMessageId:'maxlength',
@@ -137,6 +133,9 @@ Page({
           for (let key in c) {
             c[key].add_time = util.getLocalTime(c[key].add_time)
           }
+          // 替换关键字
+          let a = that.data.province
+          util.replaceKeyWord(c,a)
           that.setData({
             messages:c.concat(that.data.messages),
             scrollStatus: true

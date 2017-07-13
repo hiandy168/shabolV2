@@ -3,7 +3,6 @@ var app = getApp(),
 Page({
   data:{
     edit: -1,
-    inputValue:'',
     photo:'',
     userName:'',
     placeholder:true,
@@ -20,10 +19,12 @@ Page({
     })
     var that = this
     var userInfo = wx.getStorageSync('userInfo')
-    if(!userInfo || userInfo == ''){ // 如果没有user信息，重新授权获取
+    app.uid = wx.getStorageSync('userid')
+    if(!userInfo || userInfo == '' || !app.uid){ // 如果没有user信息，重新授权获取
       util.getSetting((res)=>{
         wx.login({ // 调用登陆
           success:function(c){
+            // 获取用户信息
             wx.getUserInfo({
               success:function(o){
                 // 重新获取unionid
@@ -37,7 +38,9 @@ Page({
                   },
                   success:function(codes){
                     var codes = JSON.parse(codes.data)
+                    app.uid = codes.openId
                     wx.setStorageSync('unionId',codes.unionId)
+                    wx.setStorageSync('userid',app.uid)
                   }
                 })
                 // 设置用户名称头像
@@ -95,7 +98,7 @@ Page({
     })
   },
   blur:function(){  // 失去焦点
-    if(trims(this.data.inputValue || trims(this.data.textValues)) == ''){
+    if(trims(this.data.textValues) == ''){
       this.setData({
         placeholder:true
       })
@@ -103,7 +106,7 @@ Page({
   },
   inputValue:function(e){//输入内容
     this.setData({
-      inputValue:e.detail.value
+      textValues:e.detail.value
     })
   },
   formSubmit:function(e){//提交表单
@@ -114,7 +117,7 @@ Page({
       let userInfo = wx.getStorageSync('userInfo')
       var c = e.detail.value.textarea;   //获取textarea输入内容
       var phoneNums = c.match(/1(([38]\d)|(4[57])|(5[012356789])|(7[0135678]))\d{8}/g);  //匹配电话数组
-      if((that.data.inputValue || that.data.textValues) && phoneNums){  ///如果匹配到电话，就进行上传接口
+      if(phoneNums){  ///如果匹配到电话，就进行上传接口
         wx.showToast({
           title: '正在发布',
           icon: 'loading'
@@ -128,6 +131,7 @@ Page({
             openId: app.uid,
             userName:userInfo.userName,
             photo:userInfo.photo,
+            formId: e.detail.formId,
             content: c,
             ts:+new Date()
           },

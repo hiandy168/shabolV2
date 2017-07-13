@@ -1,6 +1,6 @@
 <import src="../../components/showTips/index.wxml"/>
 <template is="showTips" data="{{showTopTips,showTopTxt}}"></template>
-<form bindsubmit="formSubmit">
+<form bindsubmit="formSubmit" report-submit="true">
   <view class="form">
     <textarea class="textarea" name="textarea" maxlength="500" placeholder="" value="{{textValues}}" bindinput="inputValue" bindfocus="focus" bindblur="blur" />
     <button formType="submit" class="submit">发布</button>

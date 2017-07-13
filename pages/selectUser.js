@@ -27,13 +27,9 @@ Page({
       },
       success:function(res){
         var position = res.data.data.position
-        if(position == '1'){
+        if(position == '1' || position == '2'){
           wx.redirectTo({
-            url:'./index/index?type=1'
-          })
-        } else if (position == '2') {
-          wx.redirectTo({
-            url:'./index/index?type=2'
+            url:'/pages/index/index'
           })
         } else {
           that.setData({

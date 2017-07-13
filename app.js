@@ -35,7 +35,6 @@ App({
                   photo:res.userInfo.avatarUrl
                 }
               })
-              typeof cb == "function" && cb(that.globalData.userInfo)
             },
             fail:function(res){ // 拒绝授权
               if(that.globalData.cancle) return

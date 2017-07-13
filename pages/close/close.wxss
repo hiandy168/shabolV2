@@ -97,9 +97,10 @@
   bottom:-40rpx;
   overflow: hidden;
   white-space: nowrap;
-  /*align-items: center;*/
 }
 .nickname{
+  flex: 1;
+  text-align: right;
   color: #fff;
   margin-right: 40rpx;
   white-space:nowrap;

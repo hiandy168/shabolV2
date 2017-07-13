@@ -14,7 +14,7 @@
         <text>{{message.user_name}}</text>
       </view>
       <view class="item-content">
-        <text class="item-text" selectable>{{message.user_content}}</text>
+        <rich-text class="item-text" nodes="{{message.user_content}}"></rich-text>
         <view wx:for="{{message.phone_num[0]}}" class="item-phone" data-item="{{item}}" data-content="{{message.user_content}}" bindtap="makePhoneCall">{{item}}</view>
         <view>联系我时，请说明是在极速配万人发货群看到的，谢谢！</view>
       </view>

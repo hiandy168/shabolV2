@@ -386,7 +386,6 @@ Page({
     })
   },
   jumpToUserCenter (e) { // 跳转别人个人中心
-    console.log(e)
     var that = this
     var nickname = e.target.dataset.nickname
     var avatar = e.target.dataset.avatar

@@ -57,9 +57,16 @@ const _exports = {
         d[i] = data[i]
     };
     wx.request({
-        url:'https://www.google-analytics.com/collect',
-        data:d
+      url:'https://www.google-analytics.com/collect',
+      data:d
     });
+  },
+  // 替换关键字
+  replaceKeyWord (arr,key) {
+    let reg = new RegExp(key,'g')
+    arr.forEach((item) => {
+      item.user_content = item.user_content.replace(reg,`<span style="color: #F76260;">${key}</span>`)
+    })
   },
   getLocalTime (date) {  // 转换时间
     var past = new Date(parseInt(date)*1000)
@@ -130,9 +137,5 @@ const _exports = {
       })
     }
   }
-}
-function trims(str){  //去除前面空格
-  var str = str.replace(/^\s*/g,"")
-  return str
 }
 module.exports = _exports;
